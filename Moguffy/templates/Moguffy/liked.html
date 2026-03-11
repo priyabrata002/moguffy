@@ -1,0 +1,405 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>Moguffy Music</title>
+
+<link rel="stylesheet" href="{% static 'Moguffy/css/style.css' %}">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#121212;
+color:white;
+}
+
+/* BACKGROUND VIDEO */
+
+#bg-video{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-1;
+opacity:0.25;
+}
+
+/* MAIN CONTAINER */
+
+.container{
+display:flex;
+height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:240px;
+background:black;
+padding:20px;
+}
+
+.logo{
+color:#1DB954;
+font-size:30px;
+font-weight:bold;
+margin-bottom:30px;
+}
+
+.sidebar ul{
+list-style:none;
+padding:0;
+}
+
+.sidebar li{
+padding:12px;
+}
+
+.sidebar a{
+text-decoration:none;
+color:#b3b3b3;
+font-size:16px;
+}
+
+.sidebar a:hover{
+color:white;
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+padding:30px;
+overflow:auto;
+}
+
+.main h2{
+margin-bottom:20px;
+}
+
+/* SEARCH */
+
+.search-box{
+margin-bottom:25px;
+}
+
+.search-box input{
+padding:10px;
+width:250px;
+border:none;
+border-radius:5px;
+}
+
+.search-box button{
+padding:10px 15px;
+background:#1DB954;
+border:none;
+border-radius:5px;
+cursor:pointer;
+color:white;
+}
+
+/* SONG CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:20px;
+}
+
+.card{
+background:#181818;
+padding:15px;
+border-radius:10px;
+transition:0.3s;
+}
+
+.card:hover{
+background:#282828;
+transform:scale(1.05);
+}
+
+.card img{
+width:100%;
+border-radius:10px;
+}
+
+.card h3{
+margin-top:10px;
+margin-bottom:5px;
+}
+
+.card p{
+color:#b3b3b3;
+font-size:14px;
+}
+
+.play-btn{
+margin-top:10px;
+background:#1DB954;
+border:none;
+padding:8px 15px;
+border-radius:5px;
+cursor:pointer;
+color:white;
+}
+
+/* PLAYER */
+
+.player{
+position:fixed;
+bottom:0;
+left:240px;
+right:0;
+background:#181818;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:10px 20px;
+border-top:1px solid #333;
+}
+
+.song-info{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.song-info img{
+width:50px;
+border-radius:5px;
+}
+
+.controls{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.controls button{
+background:none;
+border:none;
+color:white;
+font-size:20px;
+cursor:pointer;
+}
+
+#seekbar{
+width:300px;
+}
+
+.extras button{
+background:none;
+border:none;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- BACKGROUND VIDEO -->
+
+<video id="bg-video" autoplay muted loop></video>
+
+<div class="container">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="logo">Moguffy</div>
+
+<ul>
+<li><a href="{% url 'home' %}">🏠 Home</a></li>
+<li><a href="{% url 'search' %}">🔍 Search</a></li>
+<li><a href="{% url 'library' %}">🎵 Your Library</a></li>
+<li><a href="{% url 'liked' %}">❤️ Liked Songs</a></li>
+<li><a href="{% url 'playlist' %}">📀 Playlists</a></li>
+</ul>
+
+</div>
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+<h2>Liked Songs</h2>
+
+<div class="search-box">
+<form action="{% url 'search' %}" method="GET">
+<input type="text" name="q" placeholder="Search songs...">
+<button type="submit">Search</button>
+</form>
+</div>
+
+<div class="cards">
+
+{% for song in songs %}
+
+<div class="card">
+
+{% if song.image %} <img src="{{ song.image.url }}">
+{% else %} <img src="{% static 'Moguffy/default.jpg' %}">
+{% endif %}
+
+<h3>{{ song.title }}</h3>
+<p>{{ song.artist }}</p>
+
+<button class="play-btn"
+onclick="playSong(
+'{% if song.audio %}{{ song.audio.url }}{% endif %}',
+'{{ song.title }}',
+'{{ song.artist }}',
+'{% if song.image %}{{ song.image.url }}{% endif %}',
+'{% if song.video %}{{ song.video.url }}{% endif %}'
+)">
+▶ Play </button>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+</div>
+
+<!-- GLOBAL PLAYER -->
+
+<div class="player">
+
+<div class="song-info">
+
+<img id="player-img" src="">
+
+<div>
+<h4 id="player-title">No song playing</h4>
+<p id="player-artist"></p>
+</div>
+
+</div>
+
+<div class="controls">
+
+<button onclick="prevSong()">⏮</button> <button onclick="playPause()" id="playBtn">▶</button> <button onclick="nextSong()">⏭</button>
+
+<input type="range" id="seekbar" value="0" min="0" step="1">
+
+</div>
+
+<div class="extras">
+
+<button onclick="likeSong()">❤️</button> <button onclick="addPlaylist()">➕</button>
+
+</div>
+
+<audio id="mainAudio"></audio>
+
+</div>
+
+<script>
+
+let currentIndex = 0
+
+const audio = document.getElementById("mainAudio")
+const seekbar = document.getElementById("seekbar")
+const bgVideo = document.getElementById("bg-video")
+
+function playSong(url,title,artist,image,video){
+
+audio.src = url
+audio.play()
+
+document.getElementById("player-title").innerText = title
+document.getElementById("player-artist").innerText = artist
+document.getElementById("player-img").src = image
+
+document.getElementById("playBtn").innerText="⏸"
+
+if(video){
+bgVideo.src = video
+bgVideo.play()
+}else{
+bgVideo.pause()
+bgVideo.src=""
+}
+
+}
+
+function playPause(){
+
+if(audio.paused){
+audio.play()
+document.getElementById("playBtn").innerText="⏸"
+}else{
+audio.pause()
+document.getElementById("playBtn").innerText="▶"
+}
+
+}
+
+audio.addEventListener("loadedmetadata",function(){
+seekbar.max = Math.floor(audio.duration)
+})
+
+audio.addEventListener("timeupdate",function(){
+seekbar.value = Math.floor(audio.currentTime)
+})
+
+seekbar.addEventListener("input",function(){
+audio.currentTime = seekbar.value
+})
+
+function nextSong(){
+
+let buttons = document.querySelectorAll(".play-btn")
+
+currentIndex++
+
+if(currentIndex >= buttons.length){
+currentIndex = 0
+}
+
+buttons[currentIndex].click()
+
+}
+
+function prevSong(){
+
+let buttons = document.querySelectorAll(".play-btn")
+
+currentIndex--
+
+if(currentIndex < 0){
+currentIndex = buttons.length-1
+}
+
+buttons[currentIndex].click()
+
+}
+
+function likeSong(){
+alert("❤️ Song liked")
+}
+
+function addPlaylist(){
+alert("➕ Added to playlist")
+}
+
+</script>
+
+</body>
+</html>

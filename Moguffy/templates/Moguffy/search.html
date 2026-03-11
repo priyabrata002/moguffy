@@ -1,0 +1,40 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Search - Moguffy</title>
+</head>
+
+<body style="background:#121212;color:white;font-family:Arial;">
+
+<h2>Search Results</h2>
+
+<a href="{% url 'home' %}">⬅ Back to Home</a>
+
+<hr>
+
+{% if songs %}
+
+{% for song in songs %}
+
+<div style="margin-bottom:20px">
+
+<h3>{{ song.title }}</h3>
+<p>{{ song.artist }}</p>
+
+<a href="{% url 'like_song' song.id %}">❤️ Like</a> | <a href="{% url 'add_playlist' song.id %}">➕ Add to Playlist</a>
+
+</div>
+
+{% endfor %}
+
+{% else %}
+
+<p>No songs found.</p>
+
+{% endif %}
+
+</body>
+</html>
