@@ -1,0 +1,403 @@
+
+/* ========================
+RESET
+======================== */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:#121212;
+  color:white;
+  overflow:hidden;
+}
+
+/* ========================
+BACKGROUND VIDEO
+======================== */
+
+#bg-video{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-1;
+  opacity:0.25;
+}
+
+/* ========================
+LAYOUT
+======================== */
+
+.container{
+  display:flex;
+  height:100vh;
+}
+
+/* ========================
+SIDEBAR (GLASS EFFECT)
+======================== */
+
+.sidebar{
+  width:240px;
+  padding:25px;
+  position:fixed;
+  top:0;
+  left:0;
+  bottom:0;
+
+  background:rgba(0,0,0,0.35);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+
+  border-right:1px solid rgba(255,255,255,0.08);
+}
+
+/* ========================
+LOGO
+======================== */
+
+.logo{
+  font-size:30px;
+  font-weight:bold;
+  color:#1DB954;
+  margin-bottom:40px;
+  text-shadow:0 0 10px #1DB954;
+}
+
+/* ========================
+SIDEBAR MENU
+======================== */
+
+.sidebar ul{
+  list-style:none;
+}
+
+.sidebar li{
+  margin-bottom:15px;
+}
+
+.sidebar a{
+  text-decoration:none;
+  color:#b3b3b3;
+  font-size:16px;
+  display:block;
+  padding:10px;
+  border-radius:8px;
+  transition:0.2s;
+
+  background: rgba(255, 255, 255, 0.08); /* translucent glass */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border:1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar a:hover{
+  background: rgba(255,255,255,0.15); /* hover highlight */
+  color:white;
+}
+
+/* ========================
+MAIN AREA
+======================== */
+
+.main{
+  margin-left:240px;
+  flex:1;
+  padding:30px;
+  overflow-y:auto;
+  height:100vh;
+  padding-bottom:220px;
+  scroll-behavior:smooth;
+}
+
+.main h2{
+  margin-bottom:20px;
+  font-size:26px;
+}
+
+/* ========================
+SEARCH BAR
+======================== */
+
+.search-box{
+  margin-bottom:25px;
+}
+
+.search-box input{
+  padding:10px;
+  width:260px;
+  border:none;
+  border-radius:5px;
+  outline:none;
+}
+
+.search-box button{
+  padding:10px 15px;
+  background:#1DB954;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  color:white;
+  font-weight:bold;
+  margin-left:5px;
+  transition:0.2s;
+}
+
+.search-box button:hover{
+  background:#18a64a;
+}
+
+/* ========================
+SONG GRID
+======================== */
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:20px;
+}
+
+/* ========================
+SONG CARD
+======================== */
+
+.card{
+  background:#181818;
+  padding:15px;
+  border-radius:10px;
+  transition:0.3s;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  height:320px;
+}
+
+.card:hover{
+  background:#282828;
+  transform:scale(1.05);
+}
+
+/* ========================
+CARD IMAGE (FIXED HEIGHT)
+======================== */
+
+.card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+/* ========================
+CARD TEXT
+======================== */
+
+.card h3{
+  margin-top:10px;
+  margin-bottom:5px;
+  font-size:18px;
+}
+
+.card p{
+  font-size:14px;
+  color:#b3b3b3;
+}
+
+/* ========================
+PLAY BUTTON
+======================== */
+
+.play-btn{
+  margin-top:auto;
+
+  background:#1DB954;
+  border:none;
+  padding:10px;
+  border-radius:6px;
+  cursor:pointer;
+  color:white;
+  font-weight:bold;
+
+  transition:0.2s;
+  width:100%;
+}
+
+.play-btn:hover{
+  background:#17a34a;
+}
+
+/* ========================
+GLASS MUSIC PLAYER
+======================== */
+
+.player{
+  position:fixed;
+  bottom:15px;
+  left:260px;
+  right:20px;
+  height:75px;
+
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+
+  border:1px solid rgba(255,255,255,0.15);
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:10px 20px;
+  border-radius:20px;
+
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+
+  z-index:999;
+}
+
+/* ========================
+SONG INFO
+======================== */
+
+.song-info{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.song-info img{
+  width:50px;
+  height:50px;
+  border-radius:6px;
+  object-fit:cover;
+}
+
+.song-info h4{
+  font-size:16px;
+}
+
+.song-info p{
+  font-size:13px;
+  color:#b3b3b3;
+}
+
+/* ========================
+PLAYER CONTROLS
+======================== */
+
+.controls{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.controls button{
+  background:none;
+  border:none;
+  color:white;
+  font-size:22px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.controls button:hover{
+  color:#1DB954;
+}
+
+/* ========================
+SEEK BAR
+======================== */
+
+#seekbar{
+  width:250px;
+  accent-color:#1DB954;
+  cursor:pointer;
+}
+
+/* ========================
+EXTRA BUTTONS
+======================== */
+
+.extras{
+  display:flex;
+  gap:12px;
+}
+
+.extras button{
+  background:none;
+  border:none;
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.extras button:hover{
+  color:#1DB954;
+}
+
+/* ========================
+SCROLLBAR
+======================== */
+
+::-webkit-scrollbar{
+  width:8px;
+}
+
+::-webkit-scrollbar-track{
+  background:#121212;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#333;
+  border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:#555;
+}
+
+/* ========================
+RESPONSIVE
+======================== */
+
+@media(max-width:900px){
+
+  .sidebar{
+    width:200px;
+  }
+
+  .main{
+    margin-left:200px;
+  }
+
+  .player{
+    left:220px;
+  }
+
+}
+
+@media(max-width:700px){
+
+  .sidebar{
+    display:none;
+  }
+
+  .main{
+    margin-left:0;
+  }
+
+  .player{
+    left:20px;
+  }
+
+}
