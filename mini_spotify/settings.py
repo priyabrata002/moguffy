@@ -8,7 +8,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-temp-key')
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']  # change later to your domain
+ALLOWED_HOSTS = ["*"]
 
 # APPLICATIONS
 INSTALLED_APPS = [
